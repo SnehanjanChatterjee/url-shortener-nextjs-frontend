@@ -5,7 +5,7 @@ import { Trash2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { UrlFormData, UrlResponse } from '../models/UrlShortenerModels';
 import { GENERATE_SHORT_URL_ENDPOINT, GET_ALL_SHORT_URL_ENDPOINT, TABLE_COLUMNS } from '../constants/UrlShortenerConstants';
-import { formatDate, showToast } from '../utils/UrlShortenerUtils';
+import { formatDate, showToast, sortUrlsByCreationDate } from '../utils/UrlShortenerUtils';
 
 export default function UrlShortener() {
   const [urls, setUrls] = useState<UrlResponse[]>([]);
@@ -38,7 +38,9 @@ export default function UrlShortener() {
       }
 
       setTimeout(() => {
-        setUrls((prev) => [...result, ...prev]);
+        const updatedUrls = [...result, ...urls];
+        const sortedUrls = sortUrlsByCreationDate(updatedUrls, false); // Sorting in descending order
+        setUrls(sortedUrls);
         setIsInitialLoading(false);
       }, 1000);
     } catch (error) {
@@ -70,7 +72,9 @@ export default function UrlShortener() {
       }
       
       setTimeout(() => {
-        setUrls((prev) => [result, ...prev]);
+        const updatedUrls = [result, ...urls];
+        const sortedUrls = sortUrlsByCreationDate(updatedUrls, false); // Sorting in descending order
+        setUrls(sortedUrls);
         reset();
         showToast('URL shortened successfully!', 'success');
         setIsLoading(false);
