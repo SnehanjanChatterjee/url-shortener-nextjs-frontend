@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { UrlFormData, UrlResponse } from '../models/UrlShortenerModels';
-import { GENERATE_SHORT_URL_ENDPOINT, GET_ALL_SHORT_URL_ENDPOINT } from '../constants/UrlShortenerConstants';
+import { GENERATE_SHORT_URL_ENDPOINT, GET_ALL_SHORT_URL_ENDPOINT, TABLE_COLUMNS } from '../constants/UrlShortenerConstants';
 import { formatDate, showToast } from '../utils/UrlShortenerUtils';
 
 export default function UrlShortener() {
@@ -163,13 +163,21 @@ export default function UrlShortener() {
                 {/* {Array(10).fill(null).map((_, index) => ( */}
                   {/* <tr key={index}> */}
                   <tr>
-                    <td colSpan={5}>
-                      <div className="grid grid-cols-5 gap-4">
-                        <div className="skeleton skeleton-text col-span-1 h-6"></div>
-                        <div className="skeleton skeleton-text col-span-1 h-6"></div>
-                        <div className="skeleton skeleton-text col-span-1 h-6"></div>
-                        <div className="skeleton skeleton-text col-span-1 h-6"></div>
-                        <div className="skeleton skeleton-button col-span-1 h-6"></div>
+                    <td colSpan={TABLE_COLUMNS.length}>
+                      <div className={`grid grid-cols-${TABLE_COLUMNS.length} gap-4`}>
+                        {TABLE_COLUMNS.map((column, columnIndex) => (
+                          column.name === "Actions" ? (
+                            <div
+                              key={columnIndex}
+                              className="skeleton skeleton-button col-span-1 h-6"
+                            />
+                          ) : (
+                            <div
+                              key={columnIndex}
+                              className="skeleton skeleton-text col-span-1 h-6"
+                            />
+                          )
+                        ))}
                       </div>
                     </td>
                   </tr>
