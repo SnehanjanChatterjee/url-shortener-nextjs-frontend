@@ -13,30 +13,30 @@ export default function UrlShortener() {
 
   const onSubmit = async (data: UrlFormData) => {
     console.log(data)
-    try {
-      setIsLoading(true);
-      const response = await fetch('/api/shorten', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ url: data.url }),
-      });
+    // try {
+    //   setIsLoading(true);
+    //   const response = await fetch('/api/shorten', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({ url: data.url }),
+    //   });
       
-      const result = await response.json();
+    //   const result = await response.json();
       
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to shorten URL');
-      }
+    //   if (!response.ok) {
+    //     throw new Error(result.error || 'Failed to shorten URL');
+    //   }
       
-      setUrls((prev) => [result, ...prev]);
-      reset();
-      showToast('URL shortened successfully!', 'success');
-    } catch (error) {
-      showToast(error instanceof Error ? error.message : 'Failed to shorten URL', 'error');
-    } finally {
-      setIsLoading(false);
-    }
+    //   setUrls((prev) => [result, ...prev]);
+    //   reset();
+    //   showToast('URL shortened successfully!', 'success');
+    // } catch (error) {
+    //   showToast(error instanceof Error ? error.message : 'Failed to shorten URL', 'error');
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
 
   const handleDelete = (shortUrl: string) => {
@@ -76,7 +76,7 @@ export default function UrlShortener() {
             })}
             type="text"
             placeholder="Enter URL to shorten"
-            className={`input input-bordered w-full ${errors.url ? 'input-error' : ''}`}
+            className={`input input-bordered w-full sm:w-[600px] lg:w-[800px] ${errors.url ? 'input-error' : ''}`}
           />
           {errors.url && (
             <p className="mt-1 text-sm text-error">{errors.url.message}</p>
