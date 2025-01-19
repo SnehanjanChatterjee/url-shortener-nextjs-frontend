@@ -1,3 +1,5 @@
+'use client';
+
 import { UrlResponse } from "../models/UrlShortenerModels";
 
 export const formatDate = (dateString: string) => {
@@ -8,6 +10,7 @@ export const showToast = (message: string, type: 'success' | 'error' | 'info') =
     const toast = document.getElementById('toast') as HTMLDivElement;
     if (toast) {
       toast.className = `alert alert-${type}`;
+      // toast.className = `alert ${type === 'success' ? 'alert-success' : (type === 'info' ? 'alert-info' : 'alert-error')}`;
       toast.textContent = message;
       toast.style.display = 'flex';
       toast.style.visibility = 'visible'; // This would preoccupy space and not change the input field's positioning when this is appearing / disappearing
