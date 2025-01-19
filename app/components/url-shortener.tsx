@@ -11,7 +11,7 @@ export default function UrlShortener() {
   const [urls, setUrls] = useState<ApiResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<UrlFormData>();
-  const { register, handleSubmit, reset, formState: { errors } } = form;
+  const { register, handleSubmit, reset, setValue, formState: { errors } } = form;
 
   const onSubmit = async (urlFormData: UrlFormData) => {
     console.log("generate urlFormData = ", urlFormData)
@@ -67,6 +67,10 @@ export default function UrlShortener() {
     }
   };
 
+  const handleUrlClick = (originalUrl: string) => {
+    setValue('url', originalUrl);  // Set the value of the input field to the original URL
+  };
+  
   return (
     <div className="space-y-8">
       <div id="toast" className="alert hidden fixed top-4 right-4 z-50"></div>
@@ -115,14 +119,13 @@ export default function UrlShortener() {
               urls.map((apiResponse) => (
                 <tr key={apiResponse.result.shortUrl}>
                   <td className="max-w-[300px] truncate">
-                    <a
-                      href={apiResponse.result.originalUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="link link-hover"
+                  <span
+                    onClick={() => handleUrlClick(apiResponse.result.originalUrl)}
+                    className="link link-hover cursor-pointer"
                     >
-                      {apiResponse.result.originalUrl}
-                    </a>
+                    {apiResponse.result.originalUrl}
+                  </span>
+
                   </td>
                   <td>
                     <a
