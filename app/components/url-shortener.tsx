@@ -157,29 +157,20 @@ export default function UrlShortener() {
           <tbody>
           {isInitialLoading ? (
               <>
-                {/* Render multiple skeleton rows */}
-                {/* {Array(10).fill(null).map((_, index) => ( */}
-                  {/* <tr key={index}> */}
-                  <tr>
-                    <td colSpan={TABLE_COLUMNS.length}>
-                      <div className={`grid grid-cols-${TABLE_COLUMNS.length} gap-4`}>
-                        {TABLE_COLUMNS.map((column, columnIndex) => (
-                          column.name === "Actions" ? (
-                            <div
-                              key={columnIndex}
-                              className="skeleton skeleton-button col-span-1 h-6"
-                            />
-                          ) : (
-                            <div
-                              key={columnIndex}
-                              className="skeleton skeleton-text col-span-1 h-6"
-                            />
-                          )
-                        ))}
-                      </div>
-                    </td>
-                  </tr>
-                {/* ))} */}
+                <tr>
+                  <td colSpan={TABLE_COLUMNS.length}>
+                    <div className={`grid grid-cols-${TABLE_COLUMNS.length} gap-4`}>
+                      {TABLE_COLUMNS.map((column, columnIndex) => (
+                        <div
+                          key={columnIndex}
+                          className={`skeleton ${
+                            column.name === "Actions" ? "skeleton-button" : "skeleton-text"
+                          } col-span-1 h-6`}
+                        />
+                      ))}
+                    </div>
+                  </td>
+                </tr>
               </>
             ) : urls.length > 0 ? (
               urls.map((urlResponse) => (
