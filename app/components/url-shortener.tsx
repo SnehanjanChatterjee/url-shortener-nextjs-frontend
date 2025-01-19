@@ -11,6 +11,7 @@ export default function UrlShortener() {
   const [urls, setUrls] = useState<UrlResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(false);
+  const [newlyAddedUrl, setNewlyAddedUrl] = useState<string | null>(null);
   const form = useForm<UrlFormData>();
   const { register, handleSubmit, reset, setValue, formState: { errors } } = form;
 
@@ -75,9 +76,11 @@ export default function UrlShortener() {
         const updatedUrls = [result, ...urls];
         const sortedUrls = sortUrlsByCreationDate(updatedUrls, false); // Sorting in descending order
         setUrls(sortedUrls);
+        setNewlyAddedUrl(result.shortUrl);
         reset();
         showToast('URL shortened successfully!', 'success');
         setIsLoading(false);
+        setTimeout(() => setNewlyAddedUrl(null), 3000); // Reset the active effect of newly added url after 3 seconds
       }, 1000);
     } catch (error) {
       showToast(error instanceof Error ? error.message : 'Failed to shorten URL', 'error');
@@ -150,7 +153,7 @@ export default function UrlShortener() {
       </form>
 
       <div className="overflow-x-auto max-h-[500px]">
-        <table className="table table-zebra table-pin-rows table-pin-cols">
+        <table className="table table-pin-rows table-pin-cols">
           <thead>
             <tr>
               {TABLE_COLUMNS.map((column, columnIndex) => (
@@ -178,7 +181,7 @@ export default function UrlShortener() {
               </>
             ) : urls.length > 0 ? (
               urls.map((urlResponse) => (
-                <tr key={urlResponse.shortUrl} className="hover">
+                <tr key={urlResponse.shortUrl} className={`${newlyAddedUrl === urlResponse.shortUrl ? 'bg-base-200' : ''} hover`}>
                   <td className="max-w-[300px] truncate">
                   <span
                     onClick={() => handleUrlClick(urlResponse.originalUrl)}
