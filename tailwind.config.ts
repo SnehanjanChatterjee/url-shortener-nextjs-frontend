@@ -20,34 +20,34 @@ export default {
   daisyui: {
     themes: [
       "light",
-      "dark",
+      "dark", // Good
       "cupcake",
       "bumblebee",
-      "emerald",
+      "emerald", // Good. Like geeks for geeks in light mode
       "corporate",
       "synthwave",
       "retro",
       "cyberpunk",
       "valentine",
       "halloween",
-      "garden",
-      "forest",
+      "garden", // Good (Light + Pink)
+      "forest", // Good. Like geeks for geeks in dark mode
       "aqua",
       "lofi",
       "pastel",
       "fantasy",
-      "wireframe",
+      "wireframe", // Best light version
       "black",
       "luxury",
-      "dracula",
+      "dracula", // Good (Dark + Pink)
       "cmyk",
       "autumn",
       "business",
       "acid",
-      "lemonade",
-      "night",
+      "lemonade", // Okayish
+      "night", // Good
       "coffee",
-      "winter",
+      "winter", // Better light version
       "dim",
       "nord",
       "sunset",
