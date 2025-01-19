@@ -10,6 +10,7 @@ import { formatDate, showToast } from '../utils/UrlShortenerUtils';
 export default function UrlShortener() {
   const [urls, setUrls] = useState<UrlResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isInitialLoading, setIsInitialLoading] = useState(false);
   const form = useForm<UrlFormData>();
   const { register, handleSubmit, reset, setValue, formState: { errors } } = form;
 
@@ -18,6 +19,7 @@ export default function UrlShortener() {
   }, []);
 
   const getAllUrls = async () => {
+    setIsInitialLoading(true);
     try {
       const response = await fetch(GET_ALL_SHORT_URL_ENDPOINT, {
         method: 'GET',
@@ -35,12 +37,16 @@ export default function UrlShortener() {
         throw new Error(apiResponse.error || 'Failed to get all shorten URLs');
       }
 
-      setUrls((prev) => [...result, ...prev]);
+      setTimeout(() => {
+        setUrls((prev) => [...result, ...prev]);
+        setIsInitialLoading(false);
+      }, 1000);
     } catch (error) {
       console.error(error);
+      setIsInitialLoading(false);
     }
   };
-  
+
   const onSubmit = async (urlFormData: UrlFormData) => {
     console.log("generate urlFormData = ", urlFormData)
 
@@ -151,7 +157,25 @@ export default function UrlShortener() {
             </tr>
           </thead>
           <tbody>
-            {urls.length > 0 ? (
+          {isInitialLoading ? (
+              <>
+                {/* Render multiple skeleton rows */}
+                {/* {Array(10).fill(null).map((_, index) => ( */}
+                  {/* <tr key={index}> */}
+                  <tr>
+                    <td colSpan={5}>
+                      <div className="grid grid-cols-5 gap-4">
+                        <div className="skeleton skeleton-text col-span-1 h-6"></div>
+                        <div className="skeleton skeleton-text col-span-1 h-6"></div>
+                        <div className="skeleton skeleton-text col-span-1 h-6"></div>
+                        <div className="skeleton skeleton-text col-span-1 h-6"></div>
+                        <div className="skeleton skeleton-button col-span-1 h-6"></div>
+                      </div>
+                    </td>
+                  </tr>
+                {/* ))} */}
+              </>
+            ) : urls.length > 0 ? (
               urls.map((urlResponse) => (
                 <tr key={urlResponse.shortUrl}>
                   <td className="max-w-[300px] truncate">
