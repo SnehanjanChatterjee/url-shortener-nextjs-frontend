@@ -3,44 +3,47 @@
 import { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { UrlFormData, UrlResponse } from '../models/url';
+import { ApiResponse, UrlFormData } from '../models/UrlShortenerModels';
+import { GENERATE_SHORT_URL_ENDPOINT } from '../utils/UrlShortenerConstants';
 
 export default function UrlShortener() {
-  const [urls, setUrls] = useState<UrlResponse[]>([]);
+  const [urls, setUrls] = useState<ApiResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<UrlFormData>();
   const { register, handleSubmit, reset, formState: { errors } } = form;
 
   const onSubmit = async (data: UrlFormData) => {
-    console.log(data)
+    console.log("data = ", data)
+
     try {
       setIsLoading(true);
-    //   const response = await fetch('/api/shorten', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({ url: data.url }),
-    //   });
+      const response = await fetch(GENERATE_SHORT_URL_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ url: data.url }),
+      });
       
-    //   const result = await response.json();
+      const result = await response.json();
+      console.log("result = ", result)
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to shorten URL');
+      }
       
-    //   if (!response.ok) {
-    //     throw new Error(result.error || 'Failed to shorten URL');
-    //   }
-      
-    //   setUrls((prev) => [result, ...prev]);
-    //   reset();
-    //   showToast('URL shortened successfully!', 'success');
+      setUrls((prev) => [result, ...prev]);
+      reset();
+      showToast('URL shortened successfully!', 'success');
     } catch (error) {
-    //   showToast(error instanceof Error ? error.message : 'Failed to shorten URL', 'error');
+      showToast(error instanceof Error ? error.message : 'Failed to shorten URL', 'error');
     } finally {
-    //   setIsLoading(false);
+      setIsLoading(false);
     }
   };
 
   const handleDelete = (shortUrl: string) => {
-    setUrls((prev) => prev.filter((url) => url.shortUrl !== shortUrl));
+    setUrls((prev) => prev.filter((apiResponse) => apiResponse.result.shortUrl !== shortUrl));
     showToast('URL deleted successfully', 'success');
   };
 
@@ -105,33 +108,33 @@ export default function UrlShortener() {
           </thead>
           <tbody>
             {urls.length > 0 ? (
-              urls.map((url) => (
-                <tr key={url.shortUrl}>
+              urls.map((apiResponse) => (
+                <tr key={apiResponse.result.shortUrl}>
                   <td className="max-w-[300px] truncate">
                     <a
-                      href={url.originalUrl}
+                      href={apiResponse.result.originalUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="link link-hover"
                     >
-                      {url.originalUrl}
+                      {apiResponse.result.originalUrl}
                     </a>
                   </td>
                   <td>
                     <a
-                      href={url.shortUrl}
+                      href={apiResponse.result.shortUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="link link-primary"
                     >
-                      {url.shortUrl}
+                      {apiResponse.result.shortUrl}
                     </a>
                   </td>
-                  <td>{formatDate(url.creationDateTime)}</td>
-                  <td>{formatDate(url.expirationDateTime)}</td>
+                  <td>{formatDate(apiResponse.result.creationDateTime)}</td>
+                  <td>{formatDate(apiResponse.result.expirationDateTime)}</td>
                   <td>
                     <button
-                      onClick={() => handleDelete(url.shortUrl)}
+                      onClick={() => handleDelete(apiResponse.result.shortUrl)}
                       className="btn btn-ghost btn-sm text-error"
                     >
                       <Trash2 className="h-4 w-4" />

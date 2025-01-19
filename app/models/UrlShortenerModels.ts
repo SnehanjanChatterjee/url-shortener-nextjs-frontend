@@ -1,13 +1,7 @@
-export interface ErrorData {
-    errorCode: string;
-    errorMessage: string;
-    details: string | null;
-}
-
 export interface ApiResponse {
     status: string;
-    result: UrlResponse | null;
-    errorData: ErrorData | null;
+    result: UrlResponse;
+    errorData: ErrorData;
 }
 
 export interface UrlResponse {
@@ -15,6 +9,12 @@ export interface UrlResponse {
     shortUrl: string;
     creationDateTime: string;
     expirationDateTime: string;
+}
+
+export interface ErrorData {
+    errorCode: string;
+    errorMessage: string;
+    details: string;
 }
 
 export interface UrlFormData {
