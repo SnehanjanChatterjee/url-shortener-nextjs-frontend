@@ -14,33 +14,33 @@ export default function UrlShortener() {
   const { register, handleSubmit, reset, setValue, formState: { errors } } = form;
 
   useEffect(() => {
-    const getAllUrls = async () => {
-      try {
-        const response = await fetch(GET_ALL_SHORT_URL_ENDPOINT, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        
-        const apiResponse = await response.json();
-        console.log("get all apiResponse = ", apiResponse);
-
-        const result = apiResponse.result;
-  
-        if (!response.ok) {
-          throw new Error(apiResponse.error || 'Failed to get all shorten URLs');
-        }
-  
-        setUrls((prev) => [...result, ...prev]);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-  
     getAllUrls(); 
   }, []);
 
+  const getAllUrls = async () => {
+    try {
+      const response = await fetch(GET_ALL_SHORT_URL_ENDPOINT, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      const apiResponse = await response.json();
+      console.log("get all apiResponse = ", apiResponse);
+
+      const result = apiResponse.result;
+
+      if (!response.ok) {
+        throw new Error(apiResponse.error || 'Failed to get all shorten URLs');
+      }
+
+      setUrls((prev) => [...result, ...prev]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
   const onSubmit = async (urlFormData: UrlFormData) => {
     console.log("generate urlFormData = ", urlFormData)
 
