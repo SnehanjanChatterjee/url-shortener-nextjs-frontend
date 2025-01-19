@@ -35,7 +35,7 @@ export default function UrlShortener() {
       const result = apiResponse.result;
 
       if (!response.ok) {
-        throw new Error(apiResponse.error || 'Failed to get all shorten URLs');
+        throw new Error(apiResponse.error || 'Failed to get all shortened URLs');
       }
 
       setTimeout(() => {
@@ -45,7 +45,8 @@ export default function UrlShortener() {
         setIsInitialLoading(false);
       }, 1000);
     } catch (error) {
-      console.error(error);
+      console.log(error);
+      showToast(error instanceof Error ? error.message : 'Failed to get all shortened URL', 'error');
       setIsInitialLoading(false);
     }
   };
@@ -83,6 +84,7 @@ export default function UrlShortener() {
         setTimeout(() => setNewlyAddedUrl(null), 3000); // Reset the active effect of newly added url after 3 seconds
       }, 1000);
     } catch (error) {
+      console.log(error);
       showToast(error instanceof Error ? error.message : 'Failed to shorten URL', 'error');
       setIsLoading(false);
     } finally {
@@ -112,6 +114,7 @@ export default function UrlShortener() {
       setUrls((prev) => prev.filter((urlResponse) => urlResponse.shortUrl !== shortUrl));
       showToast('URL deleted successfully', 'success');
     } catch (error) {
+      console.log(error);
       showToast(error instanceof Error ? error.message : 'Failed to delete URL', 'error');
     }
   };
