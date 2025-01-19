@@ -145,8 +145,8 @@ export default function UrlShortener() {
         </button>
       </form>
 
-      <div className="overflow-x-auto">
-        <table className="table w-full">
+      <div className="overflow-x-auto max-h-[500px]">
+        <table className="table table-zebra table-pin-rows table-pin-cols">
           <thead>
             <tr>
               {TABLE_COLUMNS.map((column, columnIndex) => (
@@ -174,7 +174,7 @@ export default function UrlShortener() {
               </>
             ) : urls.length > 0 ? (
               urls.map((urlResponse) => (
-                <tr key={urlResponse.shortUrl}>
+                <tr key={urlResponse.shortUrl} className="hover">
                   <td className="max-w-[300px] truncate">
                   <span
                     onClick={() => handleUrlClick(urlResponse.originalUrl)}
