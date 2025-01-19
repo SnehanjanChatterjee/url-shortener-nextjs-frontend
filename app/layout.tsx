@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import AutoThemeSwitcher from "./components/auto-theme-switcher";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -12,8 +13,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="dark">
-      <body>{children}</body>
+    <html lang="en">
+      <body>
+        <AutoThemeSwitcher />
+        {children}
+      </body>
     </html>
   );
 }
