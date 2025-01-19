@@ -125,7 +125,7 @@ export default function UrlShortener() {
 
   return (
     <div className="space-y-8">
-      <div id="toast" className="alert hidden fixed top-4 right-4 z-50"></div>
+      <div id="toast" className="toast invisible fixed top-4 right-4 z-50"></div>
       
       <form onSubmit={handleSubmit(onSubmit)} className="flex gap-4">
         <div className="flex-1">

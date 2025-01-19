@@ -4,12 +4,12 @@ export const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString();
 };
 
-export const showToast = (message: string, type: 'success' | 'error') => {
+export const showToast = (message: string, type: 'success' | 'error' | 'info') => {
     const toast = document.getElementById('toast') as HTMLDivElement;
     if (toast) {
-      toast.className = `alert ${type === 'success' ? 'alert-success' : 'alert-error'}`;
+      toast.className = `alert alert-${type}`;
       toast.textContent = message;
-    //   toast.style.display = 'flex';
+      toast.style.display = 'flex';
       toast.style.visibility = 'visible'; // This would preoccupy space and not change the input field's positioning when this is appearing / disappearing
       setTimeout(() => {
         // toast.style.display = 'none';
@@ -33,4 +33,5 @@ export const sortUrlsByCreationDate = (urls: UrlResponse[], ascending: boolean =
 
 export function handleCopyToClipboard(shortUrl: string) {
   navigator.clipboard.writeText(shortUrl);
+  showToast('Successfully copied to Clipboard!', 'info');
 };
