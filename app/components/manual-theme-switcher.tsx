@@ -1,15 +1,33 @@
 'use client';
 
 import { Sun, Moon } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { THEMES } from '../constants/UrlShortenerConstants';
 
 export default function ManualThemeSwitcher() {
   const [isDarkMode, setIsDarkMode] = useState(false);
+  
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('isDarkMode');
+    if (savedTheme) {
+      setIsDarkMode(savedTheme === 'true'); // Use stored theme value (true/false)
+    }
+    setHtmlThemeTag();
+  }, []); // Only run on mount
+
+  // Effect for updating localStorage and applying theme when `isDarkMode` changes
+  useEffect(() => {
+    localStorage.setItem('isDarkMode', isDarkMode ? 'true' : 'false');
+    setHtmlThemeTag();
+  }, [isDarkMode]); // Run when `isDarkMode` changes
 
   const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    const theme = isDarkMode ? 'wireframe' : 'dark';
-    document.documentElement.setAttribute('data-theme', theme);
+    setIsDarkMode((prev) => !prev); // Toggle theme between dark and light
+  };
+
+  // Set the data-theme attribute on the <html> tag
+  const setHtmlThemeTag = () => {
+    document.documentElement.setAttribute('data-theme', isDarkMode ? THEMES.dark : THEMES.wireframe);
   };
 
   return (

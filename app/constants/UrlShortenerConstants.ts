@@ -10,3 +10,9 @@ export const TABLE_COLUMNS = [
     { name: "Expires At" },
     { name: "Actions" },
 ];
+
+export const THEMES = {
+    dark: "dark",
+    wireframe: "wireframe",
+    light: "light"
+};
