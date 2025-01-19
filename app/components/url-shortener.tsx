@@ -56,10 +56,12 @@ export default function UrlShortener() {
     if (toast) {
       toast.className = `alert ${type === 'success' ? 'alert-success' : 'alert-error'}`;
       toast.textContent = message;
-      toast.style.display = 'flex';
+    //   toast.style.display = 'flex';
+      toast.style.visibility = 'visible'; // This would preoccupy space and not change the input field's positioning when this is appearing / disappearing
       setTimeout(() => {
-        toast.style.display = 'none';
-      }, 3000);
+        // toast.style.display = 'none';
+        toast.style.visibility = 'hidden';
+      }, 1000);
     }
   };
 
