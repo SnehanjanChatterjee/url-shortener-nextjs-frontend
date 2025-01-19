@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Trash2 } from 'lucide-react';
+import { Copy, Trash2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { UrlFormData, UrlResponse } from '../models/UrlShortenerModels';
 import { GENERATE_SHORT_URL_ENDPOINT, GET_ALL_SHORT_URL_ENDPOINT, TABLE_COLUMNS } from '../constants/UrlShortenerConstants';
-import { formatDate, showToast, sortUrlsByCreationDate } from '../utils/UrlShortenerUtils';
+import { formatDate, handleCopyToClipboard, showToast, sortUrlsByCreationDate } from '../utils/UrlShortenerUtils';
 
 export default function UrlShortener() {
   const [urls, setUrls] = useState<UrlResponse[]>([]);
@@ -122,7 +122,7 @@ export default function UrlShortener() {
   const handleUrlClick = (originalUrl: string) => {
     setValue('url', originalUrl);  // Set the value of the input field to the original URL
   };
-  
+
   return (
     <div className="space-y-8">
       <div id="toast" className="alert hidden fixed top-4 right-4 z-50"></div>
@@ -174,7 +174,7 @@ export default function UrlShortener() {
                         <div
                           key={columnIndex}
                           className={`skeleton ${
-                            column.name === "Actions" ? "skeleton-button" : "skeleton-text"
+                            (["Delete", "Copy"].includes(column.name)) ? "skeleton-button" : "skeleton-text"
                           } col-span-1 h-6`}
                         />
                       ))}
@@ -212,6 +212,14 @@ export default function UrlShortener() {
                       className="btn btn-ghost btn-sm text-error"
                     >
                       <Trash2 className="h-4 w-4" />
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => handleCopyToClipboard(urlResponse.shortUrl)}
+                      className="btn btn-ghost btn-sm text-green-500 hover:text-green-700"
+                    >
+                      <Copy className="h-4 w-4" />
                     </button>
                   </td>
                 </tr>

@@ -8,7 +8,8 @@ export const TABLE_COLUMNS = [
     { name: "Short URL" },
     { name: "Created At" },
     { name: "Expires At" },
-    { name: "Actions" },
+    { name: "Delete" },
+    { name: "Copy" },
 ];
 
 export const THEMES = {

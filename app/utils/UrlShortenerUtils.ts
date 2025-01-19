@@ -30,3 +30,7 @@ export const sortUrlsByCreationDate = (urls: UrlResponse[], ascending: boolean =
     }
   });
 };
+
+export function handleCopyToClipboard(shortUrl: string) {
+  navigator.clipboard.writeText(shortUrl);
+};
