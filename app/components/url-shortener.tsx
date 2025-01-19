@@ -13,8 +13,8 @@ export default function UrlShortener() {
 
   const onSubmit = async (data: UrlFormData) => {
     console.log(data)
-    // try {
-    //   setIsLoading(true);
+    try {
+      setIsLoading(true);
     //   const response = await fetch('/api/shorten', {
     //     method: 'POST',
     //     headers: {
@@ -32,11 +32,11 @@ export default function UrlShortener() {
     //   setUrls((prev) => [result, ...prev]);
     //   reset();
     //   showToast('URL shortened successfully!', 'success');
-    // } catch (error) {
+    } catch (error) {
     //   showToast(error instanceof Error ? error.message : 'Failed to shorten URL', 'error');
-    // } finally {
+    } finally {
     //   setIsLoading(false);
-    // }
+    }
   };
 
   const handleDelete = (shortUrl: string) => {
@@ -84,7 +84,8 @@ export default function UrlShortener() {
         </div>
         <button 
           type="submit" 
-          className={`btn btn-primary ${isLoading ? 'loading' : ''}`}
+        //   className={`btn btn-primary ${isLoading ? 'loading' : ''}`} // This will turn button into a loading spinner
+          className="btn btn-primary"
           disabled={isLoading}
         >
           {isLoading ? 'Shortening...' : 'Shorten URL'}
