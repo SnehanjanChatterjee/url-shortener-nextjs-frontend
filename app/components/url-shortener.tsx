@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { ApiResponse, UrlFormData } from '../models/UrlShortenerModels';
-import { GENERATE_SHORT_URL_ENDPOINT } from '../utils/UrlShortenerConstants';
+import { GENERATE_SHORT_URL_ENDPOINT } from '../constants/UrlShortenerConstants';
+import { formatDate, showToast } from '../utils/UrlShortenerUtils';
 
 export default function UrlShortener() {
   const [urls, setUrls] = useState<ApiResponse[]>([]);
@@ -12,8 +13,8 @@ export default function UrlShortener() {
   const form = useForm<UrlFormData>();
   const { register, handleSubmit, reset, formState: { errors } } = form;
 
-  const onSubmit = async (data: UrlFormData) => {
-    console.log("data = ", data)
+  const onSubmit = async (urlFormData: UrlFormData) => {
+    console.log("generate urlFormData = ", urlFormData)
 
     try {
       setIsLoading(true);
@@ -22,11 +23,11 @@ export default function UrlShortener() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ url: data.url }),
+        body: JSON.stringify({ url: urlFormData.url }),
       });
       
       const result = await response.json();
-      console.log("result = ", result)
+      console.log("generate result = ", result)
 
       if (!response.ok) {
         throw new Error(result.error || 'Failed to shorten URL');
@@ -42,26 +43,27 @@ export default function UrlShortener() {
     }
   };
 
-  const handleDelete = (shortUrl: string) => {
-    setUrls((prev) => prev.filter((apiResponse) => apiResponse.result.shortUrl !== shortUrl));
-    showToast('URL deleted successfully', 'success');
-  };
+  const handleDelete = async (shortUrl: string) => {
+    console.log("delete shortUrl = ", shortUrl)
+    try {
+      const response = await fetch(shortUrl, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      const result = await response.json();
+      console.log("delete result = ", result)
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString();
-  };
-
-  const showToast = (message: string, type: 'success' | 'error') => {
-    const toast = document.getElementById('toast') as HTMLDivElement;
-    if (toast) {
-      toast.className = `alert ${type === 'success' ? 'alert-success' : 'alert-error'}`;
-      toast.textContent = message;
-    //   toast.style.display = 'flex';
-      toast.style.visibility = 'visible'; // This would preoccupy space and not change the input field's positioning when this is appearing / disappearing
-      setTimeout(() => {
-        // toast.style.display = 'none';
-        toast.style.visibility = 'hidden';
-      }, 1000);
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to delete URL');
+      }
+      
+      setUrls((prev) => prev.filter((apiResponse) => apiResponse.result.shortUrl !== shortUrl));
+      showToast('URL deleted successfully', 'success');
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : 'Failed to delete URL', 'error');
     }
   };
 
