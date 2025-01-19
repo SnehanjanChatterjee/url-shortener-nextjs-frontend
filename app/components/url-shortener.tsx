@@ -149,11 +149,9 @@ export default function UrlShortener() {
         <table className="table w-full">
           <thead>
             <tr>
-              <th>Original URL</th>
-              <th>Short URL</th>
-              <th>Created At</th>
-              <th>Expires At</th>
-              <th>Actions</th>
+              {TABLE_COLUMNS.map((column, columnIndex) => (
+                <th key={columnIndex}>{column.name}</th>
+              ))}
             </tr>
           </thead>
           <tbody>
