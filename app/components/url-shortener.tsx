@@ -63,13 +63,17 @@ export default function UrlShortener() {
         throw new Error(result.error || 'Failed to shorten URL');
       }
       
-      setUrls((prev) => [result, ...prev]);
-      reset();
-      showToast('URL shortened successfully!', 'success');
+      setTimeout(() => {
+        setUrls((prev) => [result, ...prev]);
+        reset();
+        showToast('URL shortened successfully!', 'success');
+        setIsLoading(false);
+      }, 1000);
     } catch (error) {
       showToast(error instanceof Error ? error.message : 'Failed to shorten URL', 'error');
-    } finally {
       setIsLoading(false);
+    } finally {
+      // setIsLoading(false);
     }
   };
 
