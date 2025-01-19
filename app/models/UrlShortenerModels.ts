@@ -20,5 +20,3 @@ export interface ErrorData {
 export interface UrlFormData {
     url: string;
 }
-
-// export type { ApiResponse, ErrorData };

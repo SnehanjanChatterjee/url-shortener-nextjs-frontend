@@ -1,17 +1,45 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { ApiResponse, UrlFormData } from '../models/UrlShortenerModels';
-import { GENERATE_SHORT_URL_ENDPOINT } from '../constants/UrlShortenerConstants';
+import { UrlFormData, UrlResponse } from '../models/UrlShortenerModels';
+import { GENERATE_SHORT_URL_ENDPOINT, GET_ALL_SHORT_URL_ENDPOINT } from '../constants/UrlShortenerConstants';
 import { formatDate, showToast } from '../utils/UrlShortenerUtils';
 
 export default function UrlShortener() {
-  const [urls, setUrls] = useState<ApiResponse[]>([]);
+  const [urls, setUrls] = useState<UrlResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<UrlFormData>();
   const { register, handleSubmit, reset, setValue, formState: { errors } } = form;
+
+  useEffect(() => {
+    const getAllUrls = async () => {
+      try {
+        const response = await fetch(GET_ALL_SHORT_URL_ENDPOINT, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        
+        const apiResponse = await response.json();
+        console.log("get all apiResponse = ", apiResponse);
+
+        const result = apiResponse.result;
+  
+        if (!response.ok) {
+          throw new Error(apiResponse.error || 'Failed to get all shorten URLs');
+        }
+  
+        setUrls((prev) => [...result, ...prev]);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
+    getAllUrls(); 
+  }, []);
 
   const onSubmit = async (urlFormData: UrlFormData) => {
     console.log("generate urlFormData = ", urlFormData)
@@ -26,8 +54,10 @@ export default function UrlShortener() {
         body: JSON.stringify({ url: urlFormData.url }),
       });
       
-      const result = await response.json();
-      console.log("generate result = ", result)
+      const apiResponse = await response.json();
+      console.log("generate apiResponse = ", apiResponse);
+
+      const result = apiResponse.result;
 
       if (!response.ok) {
         throw new Error(result.error || 'Failed to shorten URL');
@@ -53,14 +83,16 @@ export default function UrlShortener() {
         },
       });
       
-      const result = await response.json();
-      console.log("delete result = ", result)
+      const apiResponse = await response.json();
+      console.log("delete apiResponse = ", apiResponse);
+
+      const result = apiResponse.result;
 
       if (!response.ok) {
         throw new Error(result.error || 'Failed to delete URL');
       }
       
-      setUrls((prev) => prev.filter((apiResponse) => apiResponse.result.shortUrl !== shortUrl));
+      setUrls((prev) => prev.filter((urlResponse) => urlResponse.shortUrl !== shortUrl));
       showToast('URL deleted successfully', 'success');
     } catch (error) {
       showToast(error instanceof Error ? error.message : 'Failed to delete URL', 'error');
@@ -116,32 +148,32 @@ export default function UrlShortener() {
           </thead>
           <tbody>
             {urls.length > 0 ? (
-              urls.map((apiResponse) => (
-                <tr key={apiResponse.result.shortUrl}>
+              urls.map((urlResponse) => (
+                <tr key={urlResponse.shortUrl}>
                   <td className="max-w-[300px] truncate">
                   <span
-                    onClick={() => handleUrlClick(apiResponse.result.originalUrl)}
+                    onClick={() => handleUrlClick(urlResponse.originalUrl)}
                     className="link link-hover cursor-pointer"
                     >
-                    {apiResponse.result.originalUrl}
+                    {urlResponse.originalUrl}
                   </span>
 
                   </td>
                   <td>
                     <a
-                      href={apiResponse.result.shortUrl}
+                      href={urlResponse.shortUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="link link-primary"
                     >
-                      {apiResponse.result.shortUrl}
+                      {urlResponse.shortUrl}
                     </a>
                   </td>
-                  <td>{formatDate(apiResponse.result.creationDateTime)}</td>
-                  <td>{formatDate(apiResponse.result.expirationDateTime)}</td>
+                  <td>{formatDate(urlResponse.creationDateTime)}</td>
+                  <td>{formatDate(urlResponse.expirationDateTime)}</td>
                   <td>
                     <button
-                      onClick={() => handleDelete(apiResponse.result.shortUrl)}
+                      onClick={() => handleDelete(urlResponse.shortUrl)}
                       className="btn btn-ghost btn-sm text-error"
                     >
                       <Trash2 className="h-4 w-4" />
