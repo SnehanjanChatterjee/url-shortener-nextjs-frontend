@@ -3,6 +3,7 @@
 import { Sun, Moon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { THEMES } from '../constants/UrlShortenerConstants';
+import { setHtmlThemeTag } from '../utils/UrlShortenerUtils';
 
 export default function ManualThemeSwitcher() {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -12,22 +13,19 @@ export default function ManualThemeSwitcher() {
     if (savedTheme) {
       setIsDarkMode(savedTheme === 'true'); // Use stored theme value (true/false)
     }
-    setHtmlThemeTag();
+    const theme = isDarkMode ? THEMES.dark : THEMES.light;
+    setHtmlThemeTag(theme);
   }, []); // Only run on mount
 
   // Effect for updating localStorage and applying theme when `isDarkMode` changes
   useEffect(() => {
     localStorage.setItem('isDarkMode', isDarkMode ? 'true' : 'false');
-    setHtmlThemeTag();
+    const theme = isDarkMode ? THEMES.dark : THEMES.light;
+    setHtmlThemeTag(theme);
   }, [isDarkMode]); // Run when `isDarkMode` changes
 
   const toggleTheme = () => {
     setIsDarkMode((prev) => !prev); // Toggle theme between dark and light
-  };
-
-  // Set the data-theme attribute on the <html> tag
-  const setHtmlThemeTag = () => {
-    document.documentElement.setAttribute('data-theme', isDarkMode ? THEMES.dark : THEMES.wireframe);
   };
 
   return (

@@ -38,3 +38,8 @@ export function handleCopyToClipboard(shortUrl: string) {
   navigator.clipboard.writeText(shortUrl);
   showToast('Successfully copied to Clipboard!', 'info');
 };
+
+// Set the data-theme attribute on the <html> tag
+export const setHtmlThemeTag = (theme: string) => {
+  document.documentElement.setAttribute('data-theme', theme);
+};
