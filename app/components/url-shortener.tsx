@@ -12,8 +12,7 @@ export default function UrlShortener() {
   const [isLoading, setIsLoading] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [newlyAddedUrl, setNewlyAddedUrl] = useState<string | null>(null);
-  const form = useForm<UrlFormData>();
-  const { register, handleSubmit, reset, setValue, formState: { errors } } = form;
+  const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<UrlFormData>();
 
   useEffect(() => {
     getAllUrls(); 
