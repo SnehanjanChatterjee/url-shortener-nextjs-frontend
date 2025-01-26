@@ -183,7 +183,7 @@ export default function UrlShortener() {
         {urls.length > 0 && (
           <button
             onClick={handleDeleteAll}
-            className="btn btn-error"
+            className="btn btn-secondary"
             disabled={isDeletingAll}
           >
             <Trash className="h-4 w-4" />
