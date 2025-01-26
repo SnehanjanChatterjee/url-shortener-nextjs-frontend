@@ -3,6 +3,7 @@ import "./globals.css";
 import AutoThemeSwitcher from "./components/auto-theme-switcher";
 import ManualThemeSwitcher from "./components/manual-theme-switcher";
 import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export const metadata: Metadata = {
   title: "Shorten Url",
@@ -21,6 +22,7 @@ export default function RootLayout({
         <AutoThemeSwitcher />
         <ManualThemeSwitcher />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
