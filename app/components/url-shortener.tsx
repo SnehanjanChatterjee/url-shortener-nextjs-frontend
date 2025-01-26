@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Copy, ExternalLink, Trash2, Trash, Link } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { UrlFormData, UrlResponse } from '../models/UrlShortenerModels';
-import { URL_SHORTENER_GENERATE_ENDPOINT, URL_SHORTENER_GET_ALL_ENDPOINT, TABLE_COLUMNS } from '../constants/UrlShortenerConstants';
+import { URL_SHORTENER_GENERATE_ENDPOINT, URL_SHORTENER_GET_ALL_ENDPOINT, TABLE_COLUMNS, URL_SHORTENER_DELETE_ALL_ENDPOINT } from '../constants/UrlShortenerConstants';
 import { formatDate, handleCopyToClipboard, showToast, sortUrlsByCreationDate } from '../utils/UrlShortenerUtils';
 
 export default function UrlShortener() {
@@ -118,6 +118,32 @@ export default function UrlShortener() {
   };
 
   const handleDeleteAll = async () => {
+    if (!urls.length) {
+      showToast('No URLs to delete', 'info');
+      return;
+    }
+
+    if (!window.confirm('Are you sure you want to delete all shortened URLs? This action cannot be undone.')) {
+      return;
+    }
+
+    setIsDeletingAll(true);
+    try {
+      await fetch(URL_SHORTENER_DELETE_ALL_ENDPOINT, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      setUrls([]);
+      showToast('All URLs deleted successfully', 'success');
+    } catch (error) {
+      console.log(error);
+      showToast(error instanceof Error ? error.message : 'Failed to delete all URLs', 'error');
+    } finally {
+      setIsDeletingAll(false);
+    }
   };
 
   const handleUrlClick = (originalUrl: string) => {
@@ -166,7 +192,7 @@ export default function UrlShortener() {
         )}
       </form>
 
-      <div className="flex justify-center">
+      <div className="text-center w-full">
         <h2 className="text-xl font-semibold">All Shortened URLs</h2>
       </div>
 
@@ -241,7 +267,7 @@ export default function UrlShortener() {
               ))
             ) : (
               <tr>
-                <td colSpan={5} className="text-center h-32 text-base-content/60">
+                <td colSpan={TABLE_COLUMNS.length} className="text-center h-32 text-base-content/60">
                   No shortened URLs yet. Enter a URL above to get started.
                 </td>
               </tr>
