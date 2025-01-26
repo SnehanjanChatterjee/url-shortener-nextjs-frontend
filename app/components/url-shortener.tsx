@@ -21,7 +21,6 @@ export default function UrlShortener() {
   const getAllUrls = async () => {
     setIsInitialLoading(true);
     try {
-      console.log("getAllUrls env variables", process.env);
       const response = await fetch(URL_SHORTENER_GET_ALL_ENDPOINT, {
         method: 'GET',
         headers: {
