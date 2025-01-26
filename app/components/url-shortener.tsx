@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Copy, ExternalLink, Trash2 } from 'lucide-react';
+import { Copy, ExternalLink, Trash2, Trash, Link } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { UrlFormData, UrlResponse } from '../models/UrlShortenerModels';
 import { URL_SHORTENER_GENERATE_ENDPOINT, URL_SHORTENER_GET_ALL_ENDPOINT, TABLE_COLUMNS } from '../constants/UrlShortenerConstants';
@@ -11,6 +11,7 @@ export default function UrlShortener() {
   const [urls, setUrls] = useState<UrlResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(false);
+  const [isDeletingAll, setIsDeletingAll] = useState(false);
   const [newlyAddedUrl, setNewlyAddedUrl] = useState<string | null>(null);
   const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<UrlFormData>();
 
@@ -86,8 +87,6 @@ export default function UrlShortener() {
       console.log(error);
       showToast(error instanceof Error ? error.message : 'Failed to shorten URL', 'error');
       setIsLoading(false);
-    } finally {
-      // setIsLoading(false);
     }
   };
 
@@ -118,6 +117,9 @@ export default function UrlShortener() {
     }
   };
 
+  const handleDeleteAll = async () => {
+  };
+
   const handleUrlClick = (originalUrl: string) => {
     setValue('url', originalUrl);  // Set the value of the input field to the original URL
   };
@@ -146,13 +148,27 @@ export default function UrlShortener() {
         </div>
         <button 
           type="submit" 
-        //   className={`btn btn-primary ${isLoading ? 'loading' : ''}`} // This will turn button into a loading spinner
           className="btn btn-primary"
           disabled={isLoading}
         >
+          <Link className="h-4 w-4" />
           {isLoading ? 'Shortening...' : 'Shorten URL'}
         </button>
+        {urls.length > 0 && (
+          <button
+            onClick={handleDeleteAll}
+            className="btn btn-error"
+            disabled={isDeletingAll}
+          >
+            <Trash className="h-4 w-4" />
+            {isDeletingAll ? 'Deleting...' : 'Delete All'}
+          </button>
+        )}
       </form>
+
+      <div className="flex justify-center">
+        <h2 className="text-xl font-semibold">All Shortened URLs</h2>
+      </div>
 
       <div className="overflow-x-auto max-h-[500px]">
         <table className="table table-pin-rows table-pin-cols">
@@ -191,7 +207,6 @@ export default function UrlShortener() {
                     >
                     {urlResponse.originalUrl}
                   </span>
-
                   </td>
                   <td>
                     <a
