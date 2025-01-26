@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import AutoThemeSwitcher from "./components/auto-theme-switcher";
 import ManualThemeSwitcher from "./components/manual-theme-switcher";
+import { Analytics } from "@vercel/analytics/react"
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,9 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        {children}
         <AutoThemeSwitcher />
         <ManualThemeSwitcher />
-        {children}
+        <Analytics />
       </body>
     </html>
   );
