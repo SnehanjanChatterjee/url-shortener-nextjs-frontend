@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Copy, Trash2 } from 'lucide-react';
+import { Copy, ExternalLink, Trash2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { UrlFormData, UrlResponse } from '../models/UrlShortenerModels';
 import { URL_SHORTENER_GENERATE_ENDPOINT, URL_SHORTENER_GET_ALL_ENDPOINT, TABLE_COLUMNS } from '../constants/UrlShortenerConstants';
@@ -198,9 +198,10 @@ export default function UrlShortener() {
                       href={urlResponse.shortUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="link link-primary"
+                      className="link link-primary no-underline flex items-center justify-between w-full truncate"
                     >
-                      {urlResponse.shortUrl}
+                      <span className="truncate">{urlResponse.shortUrl}</span>
+                      <ExternalLink className="h-4 w-4 flex-shrink-0 ml-1" />
                     </a>
                   </td>
                   <td>{formatDate(urlResponse.creationDateTime)}</td>
