@@ -1,7 +1,9 @@
 // API Constants
-export const BASE_SHORT_URL_ENDPOINT: string = 'http://localhost:8080/v1.0/rest/url-shortener';
-export const GENERATE_SHORT_URL_ENDPOINT: string = BASE_SHORT_URL_ENDPOINT.concat('/generate');
-export const GET_ALL_SHORT_URL_ENDPOINT: string = BASE_SHORT_URL_ENDPOINT;
+const BACKEND_ENDPOINT: string  = process.env.NEXT_PUBLIC_BACKEND_CLOUD_ENDPOINT ?? "";
+const BACKEND_REST_PATH: string  = process.env.NEXT_PUBLIC_BACKEND_REST_PATH ?? "";
+const URL_SHORTENER_BASE_ENDPOINT: string = BACKEND_ENDPOINT.concat(BACKEND_REST_PATH);
+export const URL_SHORTENER_GENERATE_ENDPOINT: string = URL_SHORTENER_BASE_ENDPOINT.concat('/generate');
+export const URL_SHORTENER_GET_ALL_ENDPOINT: string = URL_SHORTENER_BASE_ENDPOINT;
 
 export const TABLE_COLUMNS = [
     { name: "Original URL" },

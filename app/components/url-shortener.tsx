@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Copy, Trash2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { UrlFormData, UrlResponse } from '../models/UrlShortenerModels';
-import { GENERATE_SHORT_URL_ENDPOINT, GET_ALL_SHORT_URL_ENDPOINT, TABLE_COLUMNS } from '../constants/UrlShortenerConstants';
+import { URL_SHORTENER_GENERATE_ENDPOINT, URL_SHORTENER_GET_ALL_ENDPOINT, TABLE_COLUMNS } from '../constants/UrlShortenerConstants';
 import { formatDate, handleCopyToClipboard, showToast, sortUrlsByCreationDate } from '../utils/UrlShortenerUtils';
 
 export default function UrlShortener() {
@@ -21,7 +21,8 @@ export default function UrlShortener() {
   const getAllUrls = async () => {
     setIsInitialLoading(true);
     try {
-      const response = await fetch(GET_ALL_SHORT_URL_ENDPOINT, {
+      console.log("getAllUrls env variables", process.env);
+      const response = await fetch(URL_SHORTENER_GET_ALL_ENDPOINT, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -55,7 +56,7 @@ export default function UrlShortener() {
 
     try {
       setIsLoading(true);
-      const response = await fetch(GENERATE_SHORT_URL_ENDPOINT, {
+      const response = await fetch(URL_SHORTENER_GENERATE_ENDPOINT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
