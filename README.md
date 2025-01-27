@@ -1,6 +1,17 @@
-### Access the website at https://url-shortener-nextjs-frontend.vercel.app/
+## Overview
+Frontend of Url Shortener project for Next.js in TypeScript. Backend Repository: [url-shortener-java-backend](https://github.com/SnehanjanChatterjee/url-shortener-java-backend)
 
-### Demo
+Access the website at https://url-shortener-nextjs-frontend.vercel.app/
+
+## Note
+The backend app is hosted on [Render](https://www.render.com)'s free tier. Render spins down a Free web service that goes 15 minutes without receiving inbound traffic. 
+Render spins the service back up whenever it next receives a request to process.
+
+So if the website appears unresponsive, the backend is likely in "sleep" mode after being idle for 15 minutes.
+
+It’s currently waking up, which may take up to a minute. Kindly wait for a moment, and the app will be ready shortly. Thank you for your understanding!
+
+## Demo
 ![image](https://github.com/user-attachments/assets/1c0ae2b8-3723-433f-9a16-d05abd926cd8)
 ![image](https://github.com/user-attachments/assets/da51de8f-c592-4316-95c3-f9efc49eb95b)
 
