@@ -93,7 +93,7 @@ export default function UrlShortener() {
   const handleDelete = async (shortUrl: string) => {
     console.log("delete shortUrl = ", shortUrl)
     try {
-      const response = await fetch(shortUrl, {
+      await fetch(shortUrl, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
