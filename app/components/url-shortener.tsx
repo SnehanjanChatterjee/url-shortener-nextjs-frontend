@@ -73,7 +73,7 @@ export default function UrlShortener() {
         throw new Error(result.error || 'Failed to shorten URL');
       }
       
-      setTimeout(() => {
+      // setTimeout(() => {
         const updatedUrls = [result, ...urls];
         const sortedUrls = sortUrlsByCreationDate(updatedUrls, false); // Sorting in descending order
         setUrls(sortedUrls);
@@ -82,7 +82,7 @@ export default function UrlShortener() {
         showToast('URL shortened successfully!', 'success');
         setIsLoading(false);
         setTimeout(() => setNewlyAddedUrl(null), 3000); // Reset the active effect of newly added url after 3 seconds
-      }, 1000);
+      // }, 1000);
     } catch (error) {
       console.log(error);
       showToast(error instanceof Error ? error.message : 'Failed to shorten URL', 'error');
@@ -99,15 +99,6 @@ export default function UrlShortener() {
           'Content-Type': 'application/json',
         },
       });
-      
-      const apiResponse = await response.json();
-      console.log("delete apiResponse = ", apiResponse);
-
-      const result = apiResponse.result;
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to delete URL');
-      }
       
       setUrls((prev) => prev.filter((urlResponse) => urlResponse.shortUrl !== shortUrl));
       showToast('URL deleted successfully', 'success');
