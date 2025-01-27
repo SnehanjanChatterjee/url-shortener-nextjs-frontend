@@ -160,9 +160,9 @@ export default function UrlShortener() {
             {...register('url', {
               required: 'URL is required',
               pattern: {
-                value: /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/,
-                message: 'Please enter a valid URL'
-              }
+                value: /^(https?:\/\/)(www\.)?([a-zA-Z0-9-_]{1,63}\.)+[a-zA-Z]{2,6}(\/[\w\-._~:/?#[\]@!$&'()*+,;=%]*)?$/,
+                message: 'Please enter a valid URL',
+              },
             })}
             type="text"
             placeholder="Enter URL to shorten"
