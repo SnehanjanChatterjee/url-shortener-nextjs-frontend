@@ -1,11 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Copy, ExternalLink, Trash2, Trash, Link } from 'lucide-react';
+import { Copy, ExternalLink, Trash2, Trash, Link, Info } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { UrlFormData, UrlResponse } from '../models/UrlShortenerModels';
 import { URL_SHORTENER_GENERATE_ENDPOINT, URL_SHORTENER_GET_ALL_ENDPOINT, TABLE_COLUMNS, URL_SHORTENER_DELETE_ALL_ENDPOINT } from '../constants/UrlShortenerConstants';
 import { formatDate, handleCopyToClipboard, showToast, sortUrlsByCreationDate } from '../utils/UrlShortenerUtils';
+import { motion } from 'framer-motion';
 
 export default function UrlShortener() {
   const [urls, setUrls] = useState<UrlResponse[]>([]);
@@ -13,6 +14,7 @@ export default function UrlShortener() {
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [isDeletingAll, setIsDeletingAll] = useState(false);
   const [newlyAddedUrl, setNewlyAddedUrl] = useState<string | null>(null);
+  const [showInfoMessage, setInfoShowMessage] = useState(false);
   const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<UrlFormData>();
 
   useEffect(() => {
@@ -143,8 +145,46 @@ export default function UrlShortener() {
 
   return (
     <div className="space-y-8">
+      
+      {/* Floating Button */}
+      {(process.env.NEXT_PUBLIC_SHOW_INFO_BUTTON && (process.env.NEXT_PUBLIC_INFO_MESSAGE_LINE1 || process.env.NEXT_PUBLIC_INFO_MESSAGE_LINE2)) && (
+        <div className="fixed bottom-4 right-4 z-50">
+          <motion.button
+            onClick={() => setInfoShowMessage(!showInfoMessage)}
+            onMouseEnter={() => setInfoShowMessage(true)}
+            onMouseLeave={() => setInfoShowMessage(false)}
+            className="btn btn-circle btn-sm btn-primary shadow-lg hover:shadow-xl transition-shadow"
+            animate={{
+              scale: [1, 1.1, 1], // Pulsing effect
+              y: [0, -8, 0], // Bouncing effect
+            }}
+            transition={{
+              repeat: Infinity,
+              duration: 1.5,
+            }}
+          >
+            <Info className="h-6 w-6" />
+          </motion.button>
+          {showInfoMessage && (
+            <div className="absolute bottom-14 right-0 w-64 p-4 bg-base-100 border border-base-200 rounded-lg shadow-lg">
+              <p className="text-sm">
+                {process.env.NEXT_PUBLIC_INFO_MESSAGE_LINE1}
+                {process.env.NEXT_PUBLIC_INFO_MESSAGE_LINE2 && (
+                  <>
+                    <br /><br />
+                    {process.env.NEXT_PUBLIC_INFO_MESSAGE_LINE2}
+                  </>
+                )}
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Toast message */}
       <div id="toast" className="toast invisible fixed top-4 right-4 z-50"></div>
       
+      {/* Input field and button form */}
       <form onSubmit={handleSubmit(onSubmit)} className="flex gap-4">
         <div className="flex-1">
           <input
@@ -183,10 +223,12 @@ export default function UrlShortener() {
         )}
       </form>
 
+      {/* Table Header */}
       <div className="text-center w-full">
         <h2 className="text-xl font-semibold">All Shortened URLs</h2>
       </div>
 
+      {/* Table */}
       <div className="overflow-x-auto max-h-[500px]">
         <table className="table table-pin-rows table-pin-cols">
           <thead>
