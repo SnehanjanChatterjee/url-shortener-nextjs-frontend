@@ -32,10 +32,10 @@ export default function UrlShortener() {
       const apiResponse = await response.json();
       console.log("get all apiResponse = ", apiResponse);
 
-      const result = apiResponse.result;
+      const result = apiResponse?.result;
 
       if (!response.ok) {
-        throw new Error(apiResponse.error || 'Failed to get all shortened URLs');
+        throw new Error(apiResponse?.error || 'Failed to get all shortened URLs');
       }
 
       setTimeout(() => {
@@ -46,7 +46,7 @@ export default function UrlShortener() {
       }, 1000);
     } catch (error) {
       console.log(error);
-      showToast(error instanceof Error ? error.message : 'Failed to get all shortened URL', 'error');
+      showToast(error instanceof Error ? error?.message : 'Failed to get all shortened URL', 'error');
       setIsInitialLoading(false);
     }
   };
@@ -67,17 +67,17 @@ export default function UrlShortener() {
       const apiResponse = await response.json();
       console.log("generate apiResponse = ", apiResponse);
 
-      const result = apiResponse.result;
+      const result = apiResponse?.result;
 
       if (!response.ok) {
-        throw new Error(result.error || 'Failed to shorten URL');
+        throw new Error(result?.error || 'Failed to shorten URL');
       }
       
       // setTimeout(() => {
         const updatedUrls = [result, ...urls];
         const sortedUrls = sortUrlsByCreationDate(updatedUrls, false); // Sorting in descending order
         setUrls(sortedUrls);
-        setNewlyAddedUrl(result.shortUrl);
+        setNewlyAddedUrl(result?.shortUrl);
         reset();
         showToast('URL shortened successfully!', 'success');
         setIsLoading(false);
@@ -85,7 +85,7 @@ export default function UrlShortener() {
       // }, 1000);
     } catch (error) {
       console.log(error);
-      showToast(error instanceof Error ? error.message : 'Failed to shorten URL', 'error');
+      showToast(error instanceof Error ? error?.message : 'Failed to shorten URL', 'error');
       setIsLoading(false);
     }
   };
@@ -100,11 +100,11 @@ export default function UrlShortener() {
         },
       });
       
-      setUrls((prev) => prev.filter((urlResponse) => urlResponse.shortUrl !== shortUrl));
+      setUrls((prev) => prev.filter((urlResponse) => urlResponse?.shortUrl !== shortUrl));
       showToast('URL deleted successfully', 'success');
     } catch (error) {
       console.log(error);
-      showToast(error instanceof Error ? error.message : 'Failed to delete URL', 'error');
+      showToast(error instanceof Error ? error?.message : 'Failed to delete URL', 'error');
     }
   };
 
@@ -131,7 +131,7 @@ export default function UrlShortener() {
       showToast('All URLs deleted successfully', 'success');
     } catch (error) {
       console.log(error);
-      showToast(error instanceof Error ? error.message : 'Failed to delete all URLs', 'error');
+      showToast(error instanceof Error ? error?.message : 'Failed to delete all URLs', 'error');
     } finally {
       setIsDeletingAll(false);
     }
