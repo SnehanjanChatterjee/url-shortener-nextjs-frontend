@@ -20,3 +20,9 @@ export interface ErrorData {
 export interface UrlFormData {
     url: string;
 }
+
+export interface User {
+    name: string;
+    email: string;
+    image: string;
+}

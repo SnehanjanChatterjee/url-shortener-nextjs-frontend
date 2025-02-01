@@ -1,4 +1,5 @@
-import {signOut} from "@/auth";
+import { signOut } from "@/auth";
+import { LogOut } from "lucide-react"; // Lucide sign-out icon
 
 export default function Logout() {
     return (
@@ -8,7 +9,13 @@ export default function Logout() {
                 await signOut()
             }}
         >
-            <button className="btn btn-primary" type="submit">Sign Out</button>
+            <button
+                className="flex items-center p-2 w-full rounded-md"
+                type="submit"
+            >
+                <LogOut className="w-4 h-4 mr-2" />
+                Sign Out
+            </button>
         </form>
     );
 }

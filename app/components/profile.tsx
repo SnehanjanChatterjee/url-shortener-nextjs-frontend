@@ -1,21 +1,35 @@
-import { auth } from "@/auth"
+import { auth } from "@/auth";
 import Login from "@/app/components/login";
 import Logout from "@/app/components/logout";
 
 export default async function Profile() {
     const session = await auth();
-    console.log("session: ", session)
     const user = session?.user;
 
     return (
         <div className="fixed top-4 right-4 z-50">
             {user ? (
                 <>
-                    <h1>Hello</h1>
-                    <h2>Name: {user.name}</h2>
-                    <h3>Email: {user.email}</h3>
-                    <h3>Image: </h3> <img src={user.image} />
-                    <Logout />
+                    <div className="flex items-center gap-3 pr-12">
+                        <h1 className="text-l font-bold">
+                            Hey, {user.name}, How you doin&#39;? 😎
+                        </h1>
+
+                        <details className="dropdown">
+                            <summary className="btn m-0 p-0">
+                                <img
+                                    src={user.image}
+                                    alt="User Avatar"
+                                    className="w-12 h-12 rounded-full border-2"
+                                />
+                            </summary>
+                            <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow-md mt-2 absolute right-0">
+                                <li>
+                                    <Logout />
+                                </li>
+                            </ul>
+                        </details>
+                    </div>
                 </>
             ) : (
                 <Login providerName="google" />
