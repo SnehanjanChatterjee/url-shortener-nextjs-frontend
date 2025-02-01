@@ -19,7 +19,7 @@ export default async function Profile() {
                             <summary className="m-0 p-0 list-none cursor-pointer">
                                 <div className="avatar transition-all duration-300 ease-in-out hover:scale-110 active:scale-95">
                                     <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                                        <img src={user.image} alt="User Avatar" />
+                                        <img src={user.image ?? "/default-avatar.png"} alt="User Avatar" />
                                     </div>
                                 </div>
                             </summary>
