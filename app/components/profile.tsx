@@ -17,13 +17,13 @@ export default async function Profile() {
 
                         <details className="dropdown">
                             <summary className="m-0 p-0 list-none cursor-pointer">
-                                <img
-                                    src={user.image}
-                                    alt="User Avatar"
-                                    className="w-10 h-10 rounded-full border-2"
-                                />
+                                <div className="avatar transition-all duration-300 ease-in-out hover:scale-110 active:scale-95">
+                                    <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                                        <img src={user.image} alt="User Avatar" />
+                                    </div>
+                                </div>
                             </summary>
-                            <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-36 p-2 shadow-md mt-2 absolute right-0">
+                            <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-40 p-2 shadow-md mt-2 absolute right-0">
                                 <li>
                                     <Logout />
                                 </li>
