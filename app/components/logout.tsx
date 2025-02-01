@@ -10,7 +10,7 @@ export default function Logout() {
             }}
         >
             <button
-                className="flex items-center p-2 w-full rounded-md"
+                className="flex items-center h-4 p-2 w-full rounded-md"
                 type="submit"
             >
                 <LogOut className="w-4 h-4 mr-2" />

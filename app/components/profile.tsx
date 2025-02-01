@@ -23,7 +23,7 @@ export default async function Profile() {
                                     className="w-10 h-10 rounded-full border-2"
                                 />
                             </summary>
-                            <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow-md mt-2 absolute right-0">
+                            <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-36 p-2 shadow-md mt-2 absolute right-0">
                                 <li>
                                     <Logout />
                                 </li>
