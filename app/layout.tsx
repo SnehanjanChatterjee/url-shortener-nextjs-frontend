@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import AutoThemeSwitcher from "./components/auto-theme-switcher";
 import ManualThemeSwitcher from "./components/manual-theme-switcher";
-import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import Profile from "./components/profile";
+import RenderDotComAnalyticsComponents from "./components/render-dot-com-analytics-components";
 
 export const metadata: Metadata = {
   title: "Shorten Url",
@@ -21,8 +21,8 @@ export default function RootLayout({
         {children}
         <AutoThemeSwitcher />
         <ManualThemeSwitcher />
-        <Analytics />
-        <SpeedInsights />
+        <Profile />
+        <RenderDotComAnalyticsComponents />
       </body>
     </html>
   );
