@@ -10,7 +10,7 @@ export default async function Profile() {
         <div className="fixed top-4 right-4 z-50">
             {user ? (
                 <>
-                    <div className="flex items-center gap-3 pr-12">
+                    <div className="flex items-center gap-6 pr-12">
                         <h1 className="text-l font-bold">
                             Hey, {user.name}, How you doin&#39;? 😎
                         </h1>
@@ -18,7 +18,7 @@ export default async function Profile() {
                         <details className="dropdown">
                             <summary className="m-0 p-0 list-none cursor-pointer">
                                 <div className="avatar transition-all duration-300 ease-in-out hover:scale-110 active:scale-95">
-                                    <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                                    <div className="w-12 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                                         <img src={user.image ?? "/default-avatar.png"} alt="User Avatar" />
                                     </div>
                                 </div>
