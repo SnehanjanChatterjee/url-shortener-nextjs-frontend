@@ -16,7 +16,7 @@ export default async function Home() {
                       </h2>
                       <p className="mt-2 text-xl animate-pulse">
                           {/*Don&#39;t miss out on the fun, log in and get started!*/}
-                          We’ll be there for you… just click login! 🚀
+                          We’ll be there for you… just click Sign In! 🚀
                       </p>
                   </div>
               )}
