@@ -4,11 +4,28 @@ import { useEffect, useState } from 'react';
 import { Copy, ExternalLink, Trash2, Trash, Link, Info } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { UrlFormData, UrlResponse } from '../models/UrlShortenerModels';
-import { URL_SHORTENER_GENERATE_ENDPOINT, URL_SHORTENER_GET_ALL_ENDPOINT, TABLE_COLUMNS, URL_SHORTENER_DELETE_ALL_ENDPOINT } from '../constants/UrlShortenerConstants';
-import { formatDate, handleCopyToClipboard, showToast, sortUrlsByCreationDate } from '../utils/UrlShortenerUtils';
+import {
+  URL_SHORTENER_GENERATE_ENDPOINT,
+  URL_SHORTENER_GET_ALL_ENDPOINT,
+  TABLE_COLUMNS,
+  URL_SHORTENER_DELETE_ALL_ENDPOINT,
+  URL_SHORTENER_USER_REGISTRATION_ENDPOINT
+} from '../constants/UrlShortenerConstants';
+import {
+  formatDate,
+  handleCopyToClipboard,
+  showToast,
+  sortUrlsByCreationDate
+} from '../utils/UrlShortenerUtils';
 import { motion } from 'framer-motion';
+import {Session, User} from "next-auth";
+import {useCookies} from "next-client-cookies";
 
-export default function UrlShortener() {
+interface UrlShortenerProps {
+  session?: Session
+}
+
+export default function UrlShortener({session}: UrlShortenerProps) {
   const [urls, setUrls] = useState<UrlResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(false);
@@ -16,10 +33,45 @@ export default function UrlShortener() {
   const [newlyAddedUrl, setNewlyAddedUrl] = useState<string | null>(null);
   const [showInfoMessage, setInfoShowMessage] = useState(false);
   const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<UrlFormData>();
+  const cookies = useCookies();
 
   useEffect(() => {
+    saveUser();
     getAllUrls(); 
   }, []);
+
+  const saveUser = async () => {
+    try {
+      const userIdCookie = cookies.get("userId");
+      console.log("saveUser userIdCookie: ", userIdCookie);
+      if (!userIdCookie) {
+        if (session && session.user) {
+          const user: User = session?.user;
+          console.log("Saving user to backend: ", user);
+          const response = await fetch(URL_SHORTENER_USER_REGISTRATION_ENDPOINT, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(user),
+          });
+
+          const apiResponse = await response.json();
+          console.log("save user apiResponse = ", apiResponse);
+
+          const result = apiResponse?.result;
+
+          if (!response.ok) {
+            throw new Error(result?.error || 'Failed to save user');
+          }
+
+          cookies.set("userId", result.userId, { secure: true });
+        }
+      }
+    } catch (error) {
+      console.log("Error saving user to backend: ", error);
+    }
+  };
 
   const getAllUrls = async () => {
     setIsInitialLoading(true);
