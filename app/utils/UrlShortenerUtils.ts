@@ -1,6 +1,6 @@
 'use client';
 
-import { UrlResponse } from "../models/UrlShortenerModels";
+import { UrlResponse } from "@/app/interfaces/UrlShortenerInterfaces";
 
 export const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString();

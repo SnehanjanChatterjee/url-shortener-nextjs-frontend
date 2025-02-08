@@ -1,9 +1,6 @@
 import {signIn} from "@/auth";
 import {LogIn} from "lucide-react";
-
-interface LoginProps {
-    providerName: string;
-}
+import {LoginProps} from "@/app/interfaces/UrlShortenerInterfaces";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function Login({providerName}: LoginProps) {

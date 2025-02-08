@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Copy, ExternalLink, Trash2, Trash, Link, Info } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { UrlFormData, UrlResponse } from '../models/UrlShortenerModels';
+import {UrlFormData, UrlResponse, UrlShortenerProps} from '@/app/interfaces/UrlShortenerInterfaces';
 import {
   URL_SHORTENER_GENERATE_ENDPOINT,
   URL_SHORTENER_GET_ALL_ENDPOINT,
@@ -18,12 +18,8 @@ import {
   sortUrlsByCreationDate
 } from '../utils/UrlShortenerUtils';
 import { motion } from 'framer-motion';
-import {Session, User} from "next-auth";
+import {User} from "next-auth";
 import {Cookies, useCookies} from 'next-client-cookies';
-
-interface UrlShortenerProps {
-  session?: Session
-}
 
 export default function UrlShortener({session}: UrlShortenerProps) {
   const [urls, setUrls] = useState<UrlResponse[]>([]);
