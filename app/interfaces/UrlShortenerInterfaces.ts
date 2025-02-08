@@ -30,3 +30,9 @@ export interface UrlShortenerProps {
 export interface LoginProps {
     providerName: string;
 }
+
+export interface UrlRequestDto {
+    url: string;
+    expirationDateTime?: string;
+    userId: string;
+}
