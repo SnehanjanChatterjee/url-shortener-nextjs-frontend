@@ -19,7 +19,6 @@ import {
 } from '../utils/UrlShortenerUtils';
 import { motion } from 'framer-motion';
 import {Session, User} from "next-auth";
-import {useCookies} from "next-client-cookies";
 
 interface UrlShortenerProps {
   session?: Session
@@ -33,40 +32,44 @@ export default function UrlShortener({session}: UrlShortenerProps) {
   const [newlyAddedUrl, setNewlyAddedUrl] = useState<string | null>(null);
   const [showInfoMessage, setInfoShowMessage] = useState(false);
   const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<UrlFormData>();
-  const cookies = useCookies();
 
   useEffect(() => {
-    saveUser();
+    verifyAndSaveUser();
     getAllUrls(); 
   }, []);
 
+  const verifyAndSaveUser = () => {
+    const userIdFromLocalStorage = localStorage.getItem("userId");
+    console.log("verifyAndSaveUser get userIdFromLocalStorage: ", userIdFromLocalStorage);
+    if (!userIdFromLocalStorage) {
+      saveUser();
+    }
+  };
+
   const saveUser = async () => {
     try {
-      const userIdCookie = cookies.get("userId");
-      console.log("saveUser userIdCookie: ", userIdCookie);
-      if (!userIdCookie) {
-        if (session && session.user) {
-          const user: User = session?.user;
-          console.log("Saving user to backend: ", user);
-          const response = await fetch(URL_SHORTENER_USER_REGISTRATION_ENDPOINT, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(user),
-          });
+      if (session && session.user) {
+        const user: User = session?.user;
+        console.log("Saving user to backend: ", user);
+        const response = await fetch(URL_SHORTENER_USER_REGISTRATION_ENDPOINT, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(user),
+        });
 
-          const apiResponse = await response.json();
-          console.log("save user apiResponse = ", apiResponse);
+        const apiResponse = await response.json();
+        console.log("save user apiResponse = ", apiResponse);
 
-          const result = apiResponse?.result;
+        const result = apiResponse?.result;
 
-          if (!response.ok) {
-            throw new Error(result?.error || 'Failed to save user');
-          }
-
-          cookies.set("userId", result.userId, { secure: true });
+        if (!response.ok) {
+          throw new Error(result?.error || 'Failed to save user');
         }
+
+        localStorage.setItem("userId", result.userId);
+        console.log("saveUser set localStorage result.userId: ", result.userId);
       }
     } catch (error) {
       console.log("Error saving user to backend: ", error);

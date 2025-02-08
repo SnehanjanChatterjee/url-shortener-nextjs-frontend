@@ -4,7 +4,6 @@ import AutoThemeSwitcher from "./components/auto-theme-switcher";
 import ManualThemeSwitcher from "./components/manual-theme-switcher";
 import Profile from "./components/profile";
 import RenderDotComAnalyticsComponents from "./components/render-dot-com-analytics-components";
-import {CookiesProvider} from "next-client-cookies/server";
 
 export const metadata: Metadata = {
   title: "Shorten Url",
@@ -19,13 +18,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <CookiesProvider>
           {children}
           <AutoThemeSwitcher />
           <ManualThemeSwitcher />
           <Profile />
           <RenderDotComAnalyticsComponents />
-        </CookiesProvider>
       </body>
     </html>
   );
