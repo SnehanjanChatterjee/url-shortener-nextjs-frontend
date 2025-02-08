@@ -19,6 +19,7 @@ import {
 } from '../utils/UrlShortenerUtils';
 import { motion } from 'framer-motion';
 import {Session, User} from "next-auth";
+import {Cookies, useCookies} from 'next-client-cookies';
 
 interface UrlShortenerProps {
   session?: Session
@@ -32,6 +33,7 @@ export default function UrlShortener({session}: UrlShortenerProps) {
   const [newlyAddedUrl, setNewlyAddedUrl] = useState<string | null>(null);
   const [showInfoMessage, setInfoShowMessage] = useState(false);
   const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<UrlFormData>();
+  const cookies: Cookies = useCookies();
 
   useEffect(() => {
     verifyAndSaveUser();
@@ -39,9 +41,9 @@ export default function UrlShortener({session}: UrlShortenerProps) {
   }, []);
 
   const verifyAndSaveUser = () => {
-    const userIdFromLocalStorage = localStorage.getItem("userId");
-    console.log("verifyAndSaveUser get userIdFromLocalStorage: ", userIdFromLocalStorage);
-    if (!userIdFromLocalStorage) {
+    const userIdFromCookie = cookies.get("userId");
+    console.log("verifyAndSaveUser get userIdFromCookie: ", userIdFromCookie);
+    if (!userIdFromCookie) {
       saveUser();
     }
   };
@@ -68,8 +70,8 @@ export default function UrlShortener({session}: UrlShortenerProps) {
           throw new Error(result?.error || 'Failed to save user');
         }
 
-        localStorage.setItem("userId", result.userId);
-        console.log("saveUser set localStorage result.userId: ", result.userId);
+        cookies.set("userId", result.userId, { secure: true });
+        console.log("saveUser set cookie result.userId: ", result.userId);
       }
     } catch (error) {
       console.log("Error saving user to backend: ", error);

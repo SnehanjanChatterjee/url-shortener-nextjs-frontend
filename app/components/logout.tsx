@@ -1,11 +1,13 @@
 "use client";
 
 import { LogOut } from "lucide-react";
+import {Cookies, useCookies} from "next-client-cookies";
 
 export default function Logout() {
+    const cookies: Cookies = useCookies();
     const handleLogout = async () => {
-        console.log("Inside LogOut, clearing localStorage for userId: ", localStorage.getItem("userId"));
-        localStorage.removeItem("userId"); // Runs in the browser
+        console.log("Inside LogOut, clearing cookie for userId: ", cookies.get("userId"));
+        cookies.remove("userId"); // Runs in the browser
 
         // Call the API route instead of signOut()
         await fetch("/api/auth/signout", { method: "POST" });
