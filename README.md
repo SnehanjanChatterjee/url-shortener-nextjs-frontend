@@ -101,6 +101,12 @@ If your project uses environment variables, create a .env file in the root direc
 ```
 NEXT_PUBLIC_BACKEND_CLOUD_ENDPOINT=<base-url-of-hosted-backend-server>
 NEXT_PUBLIC_BACKEND_REST_PATH=<rest-api-path-of-backend-service>
+NEXT_PUBLIC_SHOW_INFO_BUTTON=true [If you need to show the info. message button on bottom right of page]
+NEXT_PUBLIC_INFO_MESSAGE_LINE1=<line-1-of-message>
+NEXT_PUBLIC_INFO_MESSAGE_LINE2=<line-2-of-message> [Optional]
+AUTH_SECRET= [Should be added by AuthJS automatically when you run npx auth secret]
+AUTH_GOOGLE_ID=<create-a-new-app-in-google-cloud-console-and-create-a-credential>
+AUTH_GOOGLE_SECRET=<create-a-new-app-in-google-cloud-console-and-create-a-credential>
 ```
 
 Ensure you do not commit sensitive data by adding .env to .gitignore:
