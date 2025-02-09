@@ -1,3 +1,5 @@
+import {Session} from "next-auth";
+
 export interface ApiResponse {
     status: string;
     result: UrlResponse;
@@ -19,4 +21,18 @@ export interface ErrorData {
 
 export interface UrlFormData {
     url: string;
+}
+
+export interface UrlShortenerProps {
+    session?: Session
+}
+
+export interface LoginProps {
+    providerName: string;
+}
+
+export interface UrlRequestDto {
+    url: string;
+    expirationDateTime?: string;
+    userId: string;
 }

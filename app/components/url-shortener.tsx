@@ -1,14 +1,26 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { Copy, ExternalLink, Trash2, Trash, Link, Info } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { UrlFormData, UrlResponse } from '../models/UrlShortenerModels';
-import { URL_SHORTENER_GENERATE_ENDPOINT, URL_SHORTENER_GET_ALL_ENDPOINT, TABLE_COLUMNS, URL_SHORTENER_DELETE_ALL_ENDPOINT } from '../constants/UrlShortenerConstants';
-import { formatDate, handleCopyToClipboard, showToast, sortUrlsByCreationDate } from '../utils/UrlShortenerUtils';
-import { motion } from 'framer-motion';
+import {useEffect, useState} from 'react';
+import {Copy, ExternalLink, Trash2, Trash, Link, Info} from 'lucide-react';
+import {useForm} from 'react-hook-form';
+import {UrlFormData, UrlRequestDto, UrlResponse, UrlShortenerProps} from '@/app/interfaces/UrlShortenerInterfaces';
+import {
+  URL_SHORTENER_GENERATE_ENDPOINT,
+  URL_SHORTENER_GET_ALL_ENDPOINT,
+  TABLE_COLUMNS,
+  URL_SHORTENER_DELETE_ALL_ENDPOINT,
+  URL_SHORTENER_USER_REGISTRATION_ENDPOINT
+} from '../constants/UrlShortenerConstants';
+import {
+  formatDate,
+  handleCopyToClipboard,
+  showToast,
+  sortUrlsByCreationDate
+} from '../utils/UrlShortenerUtils';
+import {motion} from 'framer-motion';
+import {Cookies, useCookies} from 'next-client-cookies';
 
-export default function UrlShortener() {
+export default function UrlShortener({session}: UrlShortenerProps) {
   const [urls, setUrls] = useState<UrlResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(false);
@@ -16,15 +28,55 @@ export default function UrlShortener() {
   const [newlyAddedUrl, setNewlyAddedUrl] = useState<string | null>(null);
   const [showInfoMessage, setInfoShowMessage] = useState(false);
   const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<UrlFormData>();
+  const cookies: Cookies = useCookies();
+  const user = session?.user;
 
   useEffect(() => {
+    verifyAndSaveUser();
     getAllUrls(); 
   }, []);
 
-  const getAllUrls = async () => {
-    setIsInitialLoading(true);
+  const verifyAndSaveUser = () => {
+    const userIdFromCookie = cookies.get("userId");
+    console.log("verifyAndSaveUser get userIdFromCookie: ", userIdFromCookie);
+    if (!userIdFromCookie) {
+      saveUser();
+    }
+  };
+
+  const saveUser = async () => {
     try {
-      const response = await fetch(URL_SHORTENER_GET_ALL_ENDPOINT, {
+      if (user) {
+        console.log("Saving user to backend: ", user);
+        const response = await fetch(URL_SHORTENER_USER_REGISTRATION_ENDPOINT, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(user),
+        });
+
+        const apiResponse = await response.json();
+        console.log("save user apiResponse = ", apiResponse);
+
+        const result = apiResponse?.result;
+
+        if (!response.ok) {
+          throw new Error(result?.error || 'Failed to save user');
+        }
+
+        cookies.set("userId", result.userId, { secure: true });
+        console.log("saveUser set cookie result.userId: ", result.userId);
+      }
+    } catch (error) {
+      console.log("Error saving user to backend: ", error);
+    }
+  };
+
+  const getAllUrls = async () => {
+    try {
+      setIsInitialLoading(true);
+      const response = await fetch(URL_SHORTENER_GET_ALL_ENDPOINT.concat("/").concat(user?.id as string), {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -58,12 +110,17 @@ export default function UrlShortener() {
 
     try {
       setIsLoading(true);
+      const user = session?.user;
+      const urlRequestDto: UrlRequestDto = {
+        url: urlFormData?.url,
+        userId: user?.id as string
+      };
       const response = await fetch(URL_SHORTENER_GENERATE_ENDPOINT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ url: urlFormData.url }),
+        body: JSON.stringify(urlRequestDto),
       });
       
       const apiResponse = await response.json();
@@ -95,7 +152,7 @@ export default function UrlShortener() {
   const handleDelete = async (shortUrl: string) => {
     console.log("delete shortUrl = ", shortUrl)
     try {
-      await fetch(shortUrl, {
+      await fetch(shortUrl.concat("/").concat(user?.id as string), {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -122,7 +179,7 @@ export default function UrlShortener() {
 
     setIsDeletingAll(true);
     try {
-      await fetch(URL_SHORTENER_DELETE_ALL_ENDPOINT, {
+      await fetch(URL_SHORTENER_DELETE_ALL_ENDPOINT.concat("/").concat(user?.id as string), {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
