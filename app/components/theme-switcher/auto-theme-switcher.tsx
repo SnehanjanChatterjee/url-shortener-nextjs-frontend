@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect } from "react";
-import { THEMES } from "../constants/UrlShortenerConstants";
-import { setHtmlThemeTag } from "../utils/UrlShortenerUtils";
+import { THEMES } from "../../constants/UrlShortenerConstants";
+import { setHtmlThemeTag } from "../../utils/UrlShortenerUtils";
 
 export default function AutoThemeSwitcher() {
   useEffect(() => {

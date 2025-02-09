@@ -2,8 +2,8 @@
 
 import { Sun, Moon } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { THEMES } from '../constants/UrlShortenerConstants';
-import { setHtmlThemeTag } from '../utils/UrlShortenerUtils';
+import { THEMES } from '../../constants/UrlShortenerConstants';
+import { setHtmlThemeTag } from '../../utils/UrlShortenerUtils';
 
 export default function ManualThemeSwitcher() {
   const [isDarkMode, setIsDarkMode] = useState(false);

@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
-import Login from "@/app/components/login";
-import Logout from "@/app/components/logout";
+import Login from "@/app/components/authentication/login";
+import Logout from "@/app/components/authentication/logout";
 
 export default async function Profile() {
     const session = await auth();

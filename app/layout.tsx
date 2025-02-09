@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import AutoThemeSwitcher from "./components/auto-theme-switcher";
-import ManualThemeSwitcher from "./components/manual-theme-switcher";
-import Profile from "./components/profile";
+import AutoThemeSwitcher from "./components/theme-switcher/auto-theme-switcher";
+import ManualThemeSwitcher from "./components/theme-switcher/manual-theme-switcher";
+import Profile from "./components/authentication/profile";
 import RenderDotComAnalyticsComponents from "./components/render-dot-com-analytics-components";
 import {CookiesProvider} from "next-client-cookies/server";
 
