@@ -6,7 +6,7 @@ import {Cookies, useCookies} from "next-client-cookies";
 export default function Logout() {
     const cookies: Cookies = useCookies();
     const handleLogout = async () => {
-        console.log("Inside LogOut, clearing cookie for userId: ", cookies.get("userId"));
+        console.log("Inside Logout, clearing cookie for userId: ", cookies.get("userId"));
         cookies.remove("userId"); // Runs in the browser
 
         // Call the API route instead of signOut()

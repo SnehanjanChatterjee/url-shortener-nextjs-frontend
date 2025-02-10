@@ -38,7 +38,7 @@ export default function UrlShortener({session}: UrlShortenerProps) {
 
   const verifyAndSaveUser = () => {
     const userIdFromCookie = cookies.get("userId");
-    console.log("verifyAndSaveUser get userIdFromCookie: ", userIdFromCookie);
+    console.log("Inside verifyAndSaveUser, userIdFromCookie: ", userIdFromCookie);
     if (!userIdFromCookie) {
       saveUser();
     }
@@ -47,7 +47,7 @@ export default function UrlShortener({session}: UrlShortenerProps) {
   const saveUser = async () => {
     try {
       if (user) {
-        console.log("Saving user to backend: ", user);
+        console.log("Inside saveUser, saving user to backend: ", user);
         const response = await fetch(URL_SHORTENER_USER_REGISTRATION_ENDPOINT, {
           method: 'POST',
           headers: {
@@ -57,7 +57,7 @@ export default function UrlShortener({session}: UrlShortenerProps) {
         });
 
         const apiResponse = await response.json();
-        console.log("save user apiResponse = ", apiResponse);
+        console.log("Inside saveUser, apiResponse = ", apiResponse);
 
         const result = apiResponse?.result;
 
@@ -66,10 +66,10 @@ export default function UrlShortener({session}: UrlShortenerProps) {
         }
 
         cookies.set("userId", result.userId, { secure: true });
-        console.log("saveUser set cookie result.userId: ", result.userId);
+        console.log("Inside saveUser, set cookie result.userId: ", result.userId);
       }
     } catch (error) {
-      console.log("Error saving user to backend: ", error);
+      console.error("Error saving user to backend: ", error);
     }
   };
 
@@ -84,7 +84,7 @@ export default function UrlShortener({session}: UrlShortenerProps) {
       });
       
       const apiResponse = await response.json();
-      console.log("get all apiResponse = ", apiResponse);
+      console.log("Inside getAllUrls, apiResponse = ", apiResponse);
 
       const result = apiResponse?.result;
 
@@ -99,14 +99,14 @@ export default function UrlShortener({session}: UrlShortenerProps) {
         setIsInitialLoading(false);
       }, 1000);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       showToast(error instanceof Error ? error?.message : 'Failed to get all shortened URL', 'error');
       setIsInitialLoading(false);
     }
   };
 
   const onSubmit = async (urlFormData: UrlFormData) => {
-    console.log("generate urlFormData = ", urlFormData)
+    console.log("Inside onSubmit, urlFormData = ", urlFormData)
 
     try {
       setIsLoading(true);
@@ -124,7 +124,7 @@ export default function UrlShortener({session}: UrlShortenerProps) {
       });
       
       const apiResponse = await response.json();
-      console.log("generate apiResponse = ", apiResponse);
+      console.log("Inside onSubmit, apiResponse = ", apiResponse);
 
       const result = apiResponse?.result;
 
@@ -143,14 +143,14 @@ export default function UrlShortener({session}: UrlShortenerProps) {
         setTimeout(() => setNewlyAddedUrl(null), 3000); // Reset the active effect of newly added url after 3 seconds
       // }, 1000);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       showToast(error instanceof Error ? error?.message : 'Failed to shorten URL', 'error');
       setIsLoading(false);
     }
   };
 
   const handleDelete = async (shortUrl: string) => {
-    console.log("delete shortUrl = ", shortUrl)
+    console.log("Inside handleDelete, shortUrl = ", shortUrl)
     try {
       await fetch(shortUrl.concat("/").concat(user?.id as string), {
         method: 'DELETE',
@@ -162,7 +162,7 @@ export default function UrlShortener({session}: UrlShortenerProps) {
       setUrls((prev) => prev.filter((urlResponse) => urlResponse?.shortUrl !== shortUrl));
       showToast('URL deleted successfully', 'success');
     } catch (error) {
-      console.log(error);
+      console.error(error);
       showToast(error instanceof Error ? error?.message : 'Failed to delete URL', 'error');
     }
   };
@@ -189,7 +189,7 @@ export default function UrlShortener({session}: UrlShortenerProps) {
       setUrls([]);
       showToast('All URLs deleted successfully', 'success');
     } catch (error) {
-      console.log(error);
+      console.error(error);
       showToast(error instanceof Error ? error?.message : 'Failed to delete all URLs', 'error');
     } finally {
       setIsDeletingAll(false);

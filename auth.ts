@@ -16,8 +16,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             if (session.user && token.sub) {
                 session.user.id = token.sub;
             }
-            // console.log("Token inside session callback:", token);
-            // console.log("Session inside session callback:", session);
+            console.log("Inside auth.ts session callback, token:", token);
+            console.log("Inside auth.ts session callback, session:", session);
             return session;
         }
     },

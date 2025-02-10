@@ -5,8 +5,8 @@ import Logout from "@/app/components/authentication/logout";
 export default async function Profile() {
     const session = await auth();
     const user = session?.user;
-    // console.log("session: ", session);
-    // console.log("user.id: ", user?.id);
+    console.log("Inside Profile session: ", session);
+    console.log("Inside Profile user: ", user);
 
     return (
         <div className="fixed top-4 right-4 z-50">
