@@ -13,14 +13,15 @@ It’s currently waking up, which may take up to a minute. Kindly wait for a mom
 
 ## Tech Stack
 <ul>
-    <li>Next.js</li>
-    <li>React.js</li>
-    <li>TypeScript</li>
-    <li>Tailwind CSS</li>
-    <li>Daisy UI</li>
-    <li>Auth.js</li>
-    <li>Google OAuth 2.0</li>
+    <li><img src="https://www.vectorlogo.zone/logos/nextjs/nextjs-icon.svg" width="20"/> Next.js</li>
+    <li><img src="https://www.vectorlogo.zone/logos/reactjs/reactjs-icon.svg" width="20"/> React.js</li>
+    <li><img src="https://www.vectorlogo.zone/logos/typescriptlang/typescriptlang-icon.svg" width="20"/> TypeScript</li>
+    <li><img src="https://www.vectorlogo.zone/logos/tailwindcss/tailwindcss-icon.svg" width="20"/> Tailwind CSS</li>
+    <li><img src="https://www.vectorlogo.zone/logos/daisyui/daisyui-icon.svg" width="20"/> Daisy UI</li>
+    <li><img src="https://authjs.dev/img/logo-sm.png" width="20"/> Auth.js</li>
+    <li><img src="https://www.vectorlogo.zone/logos/google/google-icon.svg" width="20"/> Google OAuth 2.0</li>
 </ul>
+
 
 ## Demo
 ![image](https://github.com/user-attachments/assets/45ab9fcd-c291-4640-b0c6-9c22aa41b4c9)
