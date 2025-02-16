@@ -11,6 +11,9 @@ So if the website appears unresponsive, the backend is likely in "sleep" mode af
 
 It’s currently waking up, which may take up to a minute. Kindly wait for a moment, and the app will be ready shortly. Thank you for your understanding!
 
+## Tech Stack
+### Next.js, React.js, TypeScript, Tailwind CSS, Daisy UI, Auth.js, Google OAuth 2.0
+
 ## Demo
 ![image](https://github.com/user-attachments/assets/45ab9fcd-c291-4640-b0c6-9c22aa41b4c9)
 ![image](https://github.com/user-attachments/assets/93caf0e1-2439-41a1-839a-36d0e1f744a2)
