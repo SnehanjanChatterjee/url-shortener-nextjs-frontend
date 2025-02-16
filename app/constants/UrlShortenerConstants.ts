@@ -11,7 +11,7 @@ export const TABLE_COLUMNS = [
     { name: "Original URL" },
     { name: "Short URL" },
     { name: "Created At" },
-    { name: "Expires At" },
+    // { name: "Expires At" },
     { name: "Delete" },
     { name: "Copy" },
 ];

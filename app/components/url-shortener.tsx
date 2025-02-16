@@ -336,7 +336,7 @@ export default function UrlShortener({session}: UrlShortenerProps) {
                     </a>
                   </td>
                   <td>{formatDate(urlResponse.creationDateTime)}</td>
-                  <td>{formatDate(urlResponse.expirationDateTime)}</td>
+                  {/*<td>{formatDate(urlResponse.expirationDateTime)}</td>*/}
                   <td>
                     <button
                       onClick={() => handleDelete(urlResponse.shortUrl)}
