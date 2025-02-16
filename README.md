@@ -22,6 +22,10 @@ It’s currently waking up, which may take up to a minute. Kindly wait for a mom
     <li><img src="https://www.vectorlogo.zone/logos/google/google-icon.svg" width="20"/> Google OAuth 2.0</li>
 </ul>
 
+## Hosting
+<ul>
+    <li>Next.js App - Hosted on <a href="https://vercel.com/">Vercel</a></li>
+</ul>
 
 ## Demo
 ![image](https://github.com/user-attachments/assets/45ab9fcd-c291-4640-b0c6-9c22aa41b4c9)
